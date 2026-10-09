@@ -1,33 +1,22 @@
 # Glooblet landing page
 
-A static marketing page: plain HTML/CSS/JS, no build step, no dependencies. It's deliberately kept
-separate from the Tauri app's own frontend (`src/`). This is public-facing marketing content, not
-part of the shipped application.
+A static marketing page: plain HTML/CSS, no build step, no dependencies, no JavaScript. Its one
+job is to get someone from "what's this" to downloading the actual Windows app. It's deliberately
+kept separate from the Tauri app's own frontend (`src/`).
 
-## What's interactive
+## Sections
 
-The "Try it right here" section is a real, in-browser demo, not screenshots:
-
-- **Mouse Settings tab**: a pointer-speed slider and acceleration toggle with a live readout. Does
-  not touch your actual Windows settings (there's no native backend on a web page).
-- **Game Profiles tab**: a working cm/360° calculator using the exact same formula as
-  `src-tauri/src/calc.rs` (`cm = (2.54 × 360) / (dpi × sensitivity × yaw)`), computed live as you
-  type.
-- **Click Studio tab**: plays the actual bundled click-sound WAVs (`assets/sounds/`, copied from
-  `src-tauri/resources/sounds/`) via a plain `<audio>` element.
+Hero (what it is + download CTA) → Features (what each of the six app screens actually does) →
+Safety (the anti-cheat policy, in full) → Download (the real download link) → Footer.
 
 ## Preview locally
 
-Any static file server works, e.g.:
+Open `index.html` directly in a browser, or serve it with any static file server:
 
 ```bash
 cd landing
 python3 -m http.server 4173
 ```
-
-Then open `http://localhost:4173`. Opening `index.html` directly via `file://` also works in a
-real browser, but some embedded/sandboxed preview tools render local files as non-interactive
-snapshots. Use a server if something looks unstyled or static.
 
 ## Deploying
 
@@ -39,8 +28,6 @@ Pages, S3). For GitHub Pages from this repo: Settings → Pages → Deploy from 
 
 - `assets/mascot/`: brand images copied from `src/assets/mascot/` (except `wordmark-full.webp`,
   a larger hero crop of the original brand sheet, converted to WebP to keep it small).
-- `assets/sounds/`: a subset of the procedurally generated click sounds from
-  `src-tauri/resources/sounds/`, copied here for the Click Studio demo.
 - `assets/icon.png`: same app icon as `public/icon.png`.
 
 These are copies, not symlinks or build artifacts. If the source assets change, re-copy the ones

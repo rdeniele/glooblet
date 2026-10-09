@@ -8,8 +8,8 @@ for the full anti-cheat / game-safety policy and [docs/STATUS.md](docs/STATUS.md
 implemented versus deferred in this build.
 
 **[Download the latest portable build](releases/Glooblet-portable.exe)** (Windows 10/11, 64-bit, no
-installer) or try the [interactive landing page](landing/index.html) locally — see
-[landing/README.md](landing/README.md) for how to preview or deploy it. Licensed under
+installer), or see the [landing page](landing/index.html) (`landing/`) for a shareable download
+page — see [landing/README.md](landing/README.md) for how to preview or deploy it. Licensed under
 [MIT](LICENSE).
 
 ## Requirements

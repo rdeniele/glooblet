@@ -27,7 +27,6 @@
           <span>Glooblet</span>
         </a>
         <nav class="nav-links">
-          <a href="#demo">Try it</a>
           <a href="#features">Features</a>
           <a href="#safety">Safety</a>
           <a href="#download" class="nav-cta">Download free</a>
@@ -48,85 +47,12 @@
           </p>
           <div class="hero-actions">
             <a href="#download" class="btn btn-primary">Download for Windows (Free)</a>
-            <a href="#demo" class="btn btn-secondary">Try the live demo</a>
+            <a href="#features" class="btn btn-secondary">See what's inside</a>
           </div>
           <p class="hero-meta">Windows 10/11 · No account · No ads · Works offline</p>
         </div>
         <div class="hero-art">
           <img src="assets/mascot/wordmark-full.webp" alt="Glooblet mascot hugging a gaming mouse" />
-        </div>
-      </section>
-
-      <!-- LIVE DEMO -->
-      <section id="demo" class="section">
-        <div class="section-head">
-          <p class="eyebrow">Playground</p>
-          <h2>Try it right here, no install needed</h2>
-          <p class="section-lede">
-            This is a simplified, in-browser rebuild of three real screens from the app. The math and the
-            sounds are real; nothing here touches your actual Windows settings.
-          </p>
-        </div>
-
-        <div class="demo-shell">
-          <nav class="demo-tabs" role="tablist" aria-label="Demo pages">
-            <button class="demo-tab is-active" data-tab="mouse" role="tab" aria-selected="true">Mouse Settings</button>
-            <button class="demo-tab" data-tab="profiles" role="tab" aria-selected="false">Game Profiles</button>
-            <button class="demo-tab" data-tab="click" role="tab" aria-selected="false">Click Studio</button>
-          </nav>
-
-          <div class="demo-panel is-active" data-panel="mouse" role="tabpanel">
-            <p class="demo-note">Demo only: dragging this does not change your real Windows pointer settings.</p>
-            <div class="demo-row">
-              <label for="demo-speed">Pointer speed</label>
-              <input id="demo-speed" type="range" min="1" max="20" value="10" />
-              <output id="demo-speed-out">10 / 20</output>
-            </div>
-            <div class="demo-row">
-              <label for="demo-accel">Enhance pointer precision</label>
-              <button id="demo-accel" class="toggle" type="button" role="switch" aria-checked="false">
-                <span class="toggle-dot"></span>
-              </button>
-            </div>
-            <p class="demo-readout" id="demo-mouse-readout">Speed 10, acceleration off: Windows' own default feel.</p>
-          </div>
-
-          <div class="demo-panel" data-panel="profiles" role="tabpanel" hidden>
-            <p class="demo-note">Real math: the same cm/360° formula the app uses, computed live as you type.</p>
-            <div class="demo-grid">
-              <div class="demo-field">
-                <label for="demo-game">Game</label>
-                <select id="demo-game">
-                  <option value="0.022" data-confidence="high">Counter-Strike 2</option>
-                  <option value="0.07" data-confidence="high">VALORANT</option>
-                  <option value="0.022" data-confidence="high">Apex Legends</option>
-                  <option value="0.0066" data-confidence="community">Overwatch</option>
-                </select>
-              </div>
-              <div class="demo-field">
-                <label for="demo-dpi">DPI</label>
-                <input id="demo-dpi" type="number" value="800" min="1" max="32000" />
-              </div>
-              <div class="demo-field">
-                <label for="demo-sens">In-game sensitivity</label>
-                <input id="demo-sens" type="number" value="1.5" step="0.05" min="0" />
-              </div>
-            </div>
-            <p class="demo-readout" id="demo-cm360-readout">Fill in DPI and sensitivity to see cm per 360°.</p>
-          </div>
-
-          <div class="demo-panel" data-panel="click" role="tabpanel" hidden>
-            <p class="demo-note">Real audio: original, procedurally generated click sounds. Click to hear one.</p>
-            <div class="demo-sounds" id="demo-sounds">
-              <button class="demo-sound" data-src="assets/sounds/soft-pop.wav">Soft Pop</button>
-              <button class="demo-sound" data-src="assets/sounds/mechanical-click.wav">Mechanical Click</button>
-              <button class="demo-sound" data-src="assets/sounds/retro-blip.wav">Retro Blip</button>
-              <button class="demo-sound" data-src="assets/sounds/arcade-coin.wav">Arcade Coin</button>
-              <button class="demo-sound" data-src="assets/sounds/scifi-pulse.wav">Sci-Fi Pulse</button>
-              <button class="demo-sound" data-src="assets/sounds/minimal-tick.wav">Minimal Tick</button>
-            </div>
-            <p class="demo-readout">In the real app this maps to your left/right/middle click, with a master volume and an automatic "mute over games" default.</p>
-          </div>
         </div>
       </section>
 
@@ -201,10 +127,9 @@
           <img src="assets/mascot/excited.png" alt="" width="64" height="64" />
           <div class="download-info">
             <p class="download-title">Glooblet for Windows</p>
-            <p class="download-sub" id="download-sub">Windows 10/11 · 64-bit · WebView2 required (preinstalled on current Windows)</p>
+            <p class="download-sub">Windows 10/11 · 64-bit · WebView2 required (preinstalled on current Windows)</p>
           </div>
           <a
-            id="download-button"
             class="btn btn-primary"
             href="https://raw.githubusercontent.com/rdeniele/glooblet/main/releases/Glooblet-portable.exe"
             download="Glooblet-portable.exe"
@@ -233,7 +158,5 @@
         </div>
       </div>
     </footer>
-
-    <script src="app.js"></script>
   </body>
 </html>
