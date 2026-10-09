@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glooblet: a cute, honest mouse companion for Windows</title>
+    <meta
+      name="description"
+      content="Glooblet configures supported mouse settings, organizes per-game sensitivity profiles, and personalizes desktop click sounds. Free, local-first, Windows desktop app."
+    />
+    <link rel="icon" type="image/png" href="assets/icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <header class="nav">
+      <div class="nav-inner">
+        <a href="#top" class="brand">
+          <img src="assets/mascot/front.png" alt="" width="32" height="32" />
+          <span>Glooblet</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#demo">Try it</a>
+          <a href="#features">Features</a>
+          <a href="#safety">Safety</a>
+          <a href="#download" class="nav-cta">Download free</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-text">
+          <p class="eyebrow">Free · Windows · Local-first</p>
+          <h1>Small mouse.<br />Big moments.</h1>
+          <p class="lede">
+            Glooblet configures the mouse settings you actually have access to, keeps a sensitivity
+            profile per game, and lets your clicks sound like whatever you want, without ever touching
+            a game process.
+          </p>
+          <div class="hero-actions">
+            <a href="#download" class="btn btn-primary">Download for Windows (Free)</a>
+            <a href="#demo" class="btn btn-secondary">Try the live demo</a>
+          </div>
+          <p class="hero-meta">Windows 10/11 · No account · No ads · Works offline</p>
+        </div>
+        <div class="hero-art">
+          <img src="assets/mascot/wordmark-full.webp" alt="Glooblet mascot hugging a gaming mouse" />
+        </div>
+      </section>
+
+      <!-- LIVE DEMO -->
+      <section id="demo" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Playground</p>
+          <h2>Try it right here, no install needed</h2>
+          <p class="section-lede">
+            This is a simplified, in-browser rebuild of three real screens from the app. The math and the
+            sounds are real; nothing here touches your actual Windows settings.
+          </p>
+        </div>
+
+        <div class="demo-shell">
+          <nav class="demo-tabs" role="tablist" aria-label="Demo pages">
+            <button class="demo-tab is-active" data-tab="mouse" role="tab" aria-selected="true">Mouse Settings</button>
+            <button class="demo-tab" data-tab="profiles" role="tab" aria-selected="false">Game Profiles</button>
+            <button class="demo-tab" data-tab="click" role="tab" aria-selected="false">Click Studio</button>
+          </nav>
+
+          <div class="demo-panel is-active" data-panel="mouse" role="tabpanel">
+            <p class="demo-note">Demo only: dragging this does not change your real Windows pointer settings.</p>
+            <div class="demo-row">
+              <label for="demo-speed">Pointer speed</label>
+              <input id="demo-speed" type="range" min="1" max="20" value="10" />
+              <output id="demo-speed-out">10 / 20</output>
+            </div>
+            <div class="demo-row">
+              <label for="demo-accel">Enhance pointer precision</label>
+              <button id="demo-accel" class="toggle" type="button" role="switch" aria-checked="false">
+                <span class="toggle-dot"></span>
+              </button>
+            </div>
+            <p class="demo-readout" id="demo-mouse-readout">Speed 10, acceleration off: Windows' own default feel.</p>
+          </div>
+
+          <div class="demo-panel" data-panel="profiles" role="tabpanel" hidden>
+            <p class="demo-note">Real math: the same cm/360° formula the app uses, computed live as you type.</p>
+            <div class="demo-grid">
+              <div class="demo-field">
+                <label for="demo-game">Game</label>
+                <select id="demo-game">
+                  <option value="0.022" data-confidence="high">Counter-Strike 2</option>
+                  <option value="0.07" data-confidence="high">VALORANT</option>
+                  <option value="0.022" data-confidence="high">Apex Legends</option>
+                  <option value="0.0066" data-confidence="community">Overwatch</option>
+                </select>
+              </div>
+              <div class="demo-field">
+                <label for="demo-dpi">DPI</label>
+                <input id="demo-dpi" type="number" value="800" min="1" max="32000" />
+              </div>
+              <div class="demo-field">
+                <label for="demo-sens">In-game sensitivity</label>
+                <input id="demo-sens" type="number" value="1.5" step="0.05" min="0" />
+              </div>
+            </div>
+            <p class="demo-readout" id="demo-cm360-readout">Fill in DPI and sensitivity to see cm per 360°.</p>
+          </div>
+
+          <div class="demo-panel" data-panel="click" role="tabpanel" hidden>
+            <p class="demo-note">Real audio: original, procedurally generated click sounds. Click to hear one.</p>
+            <div class="demo-sounds" id="demo-sounds">
+              <button class="demo-sound" data-src="assets/sounds/soft-pop.wav">Soft Pop</button>
+              <button class="demo-sound" data-src="assets/sounds/mechanical-click.wav">Mechanical Click</button>
+              <button class="demo-sound" data-src="assets/sounds/retro-blip.wav">Retro Blip</button>
+              <button class="demo-sound" data-src="assets/sounds/arcade-coin.wav">Arcade Coin</button>
+              <button class="demo-sound" data-src="assets/sounds/scifi-pulse.wav">Sci-Fi Pulse</button>
+              <button class="demo-sound" data-src="assets/sounds/minimal-tick.wav">Minimal Tick</button>
+            </div>
+            <p class="demo-readout">In the real app this maps to your left/right/middle click, with a master volume and an automatic "mute over games" default.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section id="features" class="section">
+        <div class="section-head">
+          <p class="eyebrow">What's real</p>
+          <h2>Six screens, built to actually do the thing</h2>
+          <p class="section-lede">
+            No fake DPI sliders, no fabricated hardware readouts. If something can't be done safely
+            through a documented API, Glooblet says so instead of pretending.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Overview</h3>
+            <p>Your current device, pointer config, active profile, and a one-click capability check, all read live, not assumed.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Mouse Settings</h3>
+            <p>Real Windows pointer-speed and acceleration control, verified by reading the value back after every change, with one-click rollback.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Game Profiles</h3>
+            <p>Per-game DPI, sensitivity, and notes with a cm/360° calculator, rated by confidence instead of pretending every game has a known constant.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Click Studio</h3>
+            <p>Twelve original click sounds, your own uploads, and an optional low-level listener that plays a sound on click without ever touching the click itself.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Devices</h3>
+            <p>Read-only mouse identification via Windows' own device APIs, no admin rights, no fake per-vendor DPI control.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Settings</h3>
+            <p>Launch at startup via the standard per-user registry key, plus the full safety notice, always one click away.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- SAFETY -->
+      <section id="safety" class="section safety">
+        <div class="safety-card">
+          <img src="assets/mascot/focused.png" alt="" width="72" height="72" />
+          <div>
+            <h2>Built to stay out of your games</h2>
+            <p>
+              Glooblet never reads or writes game memory, never injects code, and never automates
+              gameplay. Everything it does is visible, user-mode, and built from documented Windows
+              APIs. See the full policy in
+              <a href="https://github.com/rdeniele/glooblet/blob/main/docs/SECURITY.md" target="_blank" rel="noopener">docs/SECURITY.md</a>.
+            </p>
+            <p class="safety-quote">
+              "Glooblet is designed to configure supported mouse and desktop settings without
+              automating gameplay. Game compatibility depends on each game's policies, anti-cheat
+              system, hardware, and the specific integration used. Glooblet does not guarantee that
+              every third-party integration is permitted by every game."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOWNLOAD -->
+      <section id="download" class="section download">
+        <div class="section-head">
+          <p class="eyebrow">Get it</p>
+          <h2>Download Glooblet, it's free</h2>
+          <p class="section-lede">A portable Windows executable. No installer, no account, nothing phoning home.</p>
+        </div>
+        <div class="download-card">
+          <img src="assets/mascot/excited.png" alt="" width="64" height="64" />
+          <div class="download-info">
+            <p class="download-title">Glooblet for Windows</p>
+            <p class="download-sub" id="download-sub">Windows 10/11 · 64-bit · WebView2 required (preinstalled on current Windows)</p>
+          </div>
+          <a
+            id="download-button"
+            class="btn btn-primary"
+            href="https://raw.githubusercontent.com/rdeniele/glooblet/main/releases/Glooblet-portable.exe"
+            download="Glooblet-portable.exe"
+          >
+            Download Glooblet.exe
+          </a>
+        </div>
+        <p class="download-note">
+          Prefer to build it yourself? <a href="https://github.com/rdeniele/glooblet" target="_blank" rel="noopener">Clone the source on GitHub</a>.
+          It's a normal Tauri project (<code>npm install && npm run tauri build</code>).
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="assets/mascot/front.png" alt="" width="24" height="24" />
+          <span>Glooblet</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/rdeniele/glooblet" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/rdeniele/glooblet/blob/main/docs/SECURITY.md" target="_blank" rel="noopener">Security</a>
+          <a href="https://github.com/rdeniele/glooblet/blob/main/docs/STATUS.md" target="_blank" rel="noopener">Status</a>
+          <a href="https://github.com/rdeniele/glooblet/issues" target="_blank" rel="noopener">Report an issue</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

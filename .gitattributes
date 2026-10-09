@@ -1,0 +1,12 @@
+# Ensure binary assets are never subjected to line-ending conversion
+# (core.autocrlf etc.), which would corrupt them on checkout/commit.
+*.exe binary
+*.dll binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.png binary
+*.webp binary
+*.ico binary
+*.icns binary
+*.sqlite3 binary
