@@ -7,10 +7,10 @@ Glooblet configures settings; it does not automate gameplay. See [docs/SECURITY.
 for the full anti-cheat / game-safety policy and [docs/STATUS.md](docs/STATUS.md) for exactly what's
 implemented versus deferred in this build.
 
-**[Download the latest portable build](releases/Glooblet-portable.exe)** (Windows 10/11, 64-bit, no
-installer), or see the [landing page](landing/index.html) (`landing/`) for a shareable download
-page — see [landing/README.md](landing/README.md) for how to preview or deploy it. Licensed under
-[MIT](LICENSE).
+**[Download the Windows installer](releases/Glooblet-Setup.exe)** (Windows 10/11, 64-bit, installs
+for your user account, no admin rights needed), or see the [landing page](landing/index.html)
+(`landing/`) for a shareable download page — see [landing/README.md](landing/README.md) for how to
+preview or deploy it. Licensed under [MIT](LICENSE).
 
 ## Requirements
 
@@ -37,10 +37,10 @@ Rust changes trigger a recompile + relaunch.
 npm run tauri build
 ```
 
-Produces an installer (NSIS/MSI, depending on what's available on the build machine) in
-`src-tauri/target/release/bundle/`. Building a distributable installer additionally requires
-NSIS or the WiX toolset to be installed; without either, `cargo tauri build` still produces a
-runnable `.exe` in `src-tauri/target/release/`.
+Produces an NSIS installer at `src-tauri/target/release/bundle/nsis/Glooblet_0.1.0_x64-setup.exe`.
+Requires NSIS to be installed on the build machine (`winget install NSIS.NSIS`); without it, the
+bundling step fails but `src-tauri/target/release/glooblet.exe` (the raw, portable binary) still
+gets built.
 
 ## Tests
 

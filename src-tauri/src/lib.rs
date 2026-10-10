@@ -13,50 +13,106 @@ use state::AppState;
 use std::sync::{Arc, Mutex};
 use tauri::Manager;
 
+/// Builds everything `setup()` needs, as a `Result` instead of a chain of
+/// `.expect()`s. Startup used to panic on the first failure here — and with
+/// `panic = "abort"` in the release profile plus the windowed subsystem
+/// hiding the console, that meant the app could vanish with zero explanation
+/// the instant it launched (a disk-full app-data dir, a locked database file
+/// from a previous crashed instance, a broken install). Collecting failures
+/// into a `Result` lets `run()` show the user an actual message instead.
+fn build_app_state(app: &tauri::App) -> Result<AppState, String> {
+    let app_data_dir = app
+        .path()
+        .app_data_dir()
+        .map_err(|e| format!("Could not find a place to store app data: {e}"))?;
+
+    // `resource_dir()` alone points at different places in dev vs. a
+    // packaged build; `resolve(.., BaseDirectory::Resource)` is the API
+    // Tauri actually intends for finding a specific bundled file in both
+    // modes, so bundled resources are located through it rather than a
+    // hand-rolled `resource_dir().join(...)`.
+    let builtin_sounds_dir = app
+        .path()
+        .resolve("resources/sounds", tauri::path::BaseDirectory::Resource)
+        .map_err(|e| format!("Could not locate the bundled sound files: {e}"))?;
+
+    let conn = db::open(&app_data_dir)
+        .map_err(|e| format!("Could not open the local database at {app_data_dir:?}: {e}"))?;
+    seed::seed_builtin_sounds(&conn)
+        .map_err(|e| format!("Could not set up the built-in sound library: {e}"))?;
+
+    let audio = Arc::new(audio::AudioEngine::new());
+
+    let app_state = AppState {
+        db: Mutex::new(conn),
+        audio: audio.clone(),
+        hook: Mutex::new(None),
+        app_data_dir,
+        builtin_sounds_dir,
+    };
+
+    // If click sounds were left enabled from a previous session, restore the
+    // hook on launch so behavior survives a restart. A failure here (e.g. the
+    // hook API being unavailable) shouldn't block the rest of the app from
+    // starting, so it's logged rather than propagated.
+    {
+        let conn = app_state.db.lock().unwrap();
+        match db::load_settings(&conn) {
+            Ok(settings) if settings.click_sound_enabled => {
+                drop(conn);
+                if let Ok(handle) = audio::hook::start(audio.clone()) {
+                    *app_state.hook.lock().unwrap() = Some(handle);
+                } else {
+                    log::warn!("could not restore the click-sound hook on startup");
+                }
+            }
+            Ok(_) => {}
+            Err(e) => log::warn!("could not load settings on startup: {e}"),
+        }
+    }
+
+    Ok(app_state)
+}
+
+/// Shows a native "Glooblet failed to start" message box and exits. Used
+/// only for the handful of startup failures that leave the app with nothing
+/// useful to show — deliberately not a panic, so it never hits the
+/// `panic = "abort"` release profile's silent, unwind-free termination.
+fn fatal_startup_error(message: &str) -> ! {
+    #[cfg(target_os = "windows")]
+    {
+        use windows::core::PCWSTR;
+        use windows::Win32::UI::WindowsAndMessaging::{MessageBoxW, MB_ICONERROR, MB_OK};
+        let text: Vec<u16> = format!("Glooblet couldn't start:\n\n{message}")
+            .encode_utf16()
+            .chain(std::iter::once(0))
+            .collect();
+        let title: Vec<u16> = "Glooblet".encode_utf16().chain(std::iter::once(0)).collect();
+        unsafe {
+            MessageBoxW(
+                None,
+                PCWSTR(text.as_ptr()),
+                PCWSTR(title.as_ptr()),
+                MB_OK | MB_ICONERROR,
+            );
+        }
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        eprintln!("Glooblet couldn't start: {message}");
+    }
+    std::process::exit(1)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
-            let app_data_dir = app
-                .path()
-                .app_data_dir()
-                .expect("app data directory must be resolvable");
-            // `resource_dir()` alone points at different places in dev vs. a
-            // packaged build; `resolve(.., BaseDirectory::Resource)` is the
-            // API Tauri actually intends for finding a specific bundled file
-            // in both modes, so bundled resources are located through it
-            // rather than a hand-rolled `resource_dir().join(...)`.
-            let builtin_sounds_dir = app
-                .path()
-                .resolve("resources/sounds", tauri::path::BaseDirectory::Resource)
-                .expect("bundled sounds resource directory must be resolvable");
-
-            let conn = db::open(&app_data_dir).expect("failed to open local database");
-            seed::seed_builtin_sounds(&conn).expect("failed to seed built-in sounds");
-
-            let audio = Arc::new(audio::AudioEngine::new());
-
-            let app_state = AppState {
-                db: Mutex::new(conn),
-                audio: audio.clone(),
-                hook: Mutex::new(None),
-                app_data_dir,
-                builtin_sounds_dir,
+            let app_state = match build_app_state(app) {
+                Ok(state) => state,
+                Err(message) => fatal_startup_error(&message),
             };
-
-            // If click sounds were left enabled from a previous session, restore
-            // the hook on launch so behavior survives a restart.
-            {
-                let conn = app_state.db.lock().unwrap();
-                let settings = db::load_settings(&conn).expect("failed to load settings");
-                drop(conn);
-                if settings.click_sound_enabled {
-                    if let Ok(handle) = audio::hook::start(audio.clone()) {
-                        *app_state.hook.lock().unwrap() = Some(handle);
-                    }
-                }
-            }
 
             app.manage(app_state);
 

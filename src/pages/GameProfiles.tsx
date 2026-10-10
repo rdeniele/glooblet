@@ -11,6 +11,7 @@ import { EmptyState } from "../components/ui/EmptyState";
 import { Spinner } from "../components/ui/Spinner";
 import { Tooltip } from "../components/ui/Tooltip";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import {
   listProfiles,
   createProfile,
@@ -71,7 +72,7 @@ export function GameProfiles({
       setGames(gameList);
       setActiveProfileId(settings.selected_profile_id);
     } catch (e) {
-      toast.error("Could not load game profiles", String(e));
+      toast.error("Could not load game profiles", getErrorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -90,7 +91,7 @@ export function GameProfiles({
       onActiveProfileChange(profile.name);
       toast.success(`"${profile.name}" is now the active profile`);
     } catch (e) {
-      toast.error("Could not set active profile", String(e));
+      toast.error("Could not set active profile", getErrorMessage(e));
     }
   };
 
@@ -109,7 +110,7 @@ export function GameProfiles({
       }
       setEditing(null);
     } catch (e) {
-      toast.error("Could not save profile", String(e));
+      toast.error("Could not save profile", getErrorMessage(e));
     }
   };
 
@@ -124,7 +125,7 @@ export function GameProfiles({
       }
       toast.success("Profile deleted");
     } catch (e) {
-      toast.error("Could not delete profile", String(e));
+      toast.error("Could not delete profile", getErrorMessage(e));
     } finally {
       setConfirmDelete(null);
     }
@@ -136,7 +137,7 @@ export function GameProfiles({
       setProfiles((ps) => [dup, ...ps]);
       toast.success("Profile duplicated");
     } catch (e) {
-      toast.error("Could not duplicate profile", String(e));
+      toast.error("Could not duplicate profile", getErrorMessage(e));
     }
   };
 
@@ -145,7 +146,7 @@ export function GameProfiles({
       const path = await exportProfileToFile(profile.id, profile.name.replace(/[^a-z0-9-_]+/gi, "_"));
       if (path) toast.success("Profile exported", path);
     } catch (e) {
-      toast.error("Could not export profile", String(e));
+      toast.error("Could not export profile", getErrorMessage(e));
     }
   };
 
@@ -157,7 +158,7 @@ export function GameProfiles({
         toast.success(`Imported "${imported.name}"`);
       }
     } catch (e) {
-      toast.error("Could not import profile", String(e));
+      toast.error("Could not import profile", getErrorMessage(e));
     }
   };
 
@@ -167,7 +168,7 @@ export function GameProfiles({
       try {
         setRegistry(await compatibilityRegistry());
       } catch (e) {
-        toast.error("Could not load compatibility registry", String(e));
+        toast.error("Could not load compatibility registry", getErrorMessage(e));
       }
     }
   };
@@ -322,7 +323,7 @@ function ProfileEditor({
       })
       .catch((e) => {
         setCm360(null);
-        setCm360Error(typeof e === "string" ? e : String(e));
+        setCm360Error(typeof e === "string" ? e : getErrorMessage(e));
       });
   }, [draft.game, draft.dpi, draft.sensitivity, draft.yaw_constant]);
 

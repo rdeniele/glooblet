@@ -10,6 +10,7 @@ import { StatusBadge } from "../components/ui/StatusBadge";
 import { ConfirmDialog } from "../components/ui/Dialog";
 import { Spinner } from "../components/ui/Spinner";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import { getPointerConfig, applyPointerConfig, restorePointerConfig } from "../lib/api";
 import type { PointerConfig } from "../lib/types";
 import { POINTER_ACCELERATION_TOOLTIP, POLLING_RATE_TOOLTIP, DPI_TOOLTIP } from "../lib/constants";
@@ -36,7 +37,7 @@ export function MouseSettings() {
       setPointer(cfg);
       setDraftSpeed(cfg.speed);
     } catch (e) {
-      toast.error("Could not read Windows pointer settings", String(e));
+      toast.error("Could not read Windows pointer settings", getErrorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -56,7 +57,7 @@ export function MouseSettings() {
       setDraftSpeed(result.applied.speed);
       toast.success("Pointer settings applied and verified", "Windows confirmed the new values on read-back.");
     } catch (e) {
-      toast.error("Could not apply pointer settings", String(e));
+      toast.error("Could not apply pointer settings", getErrorMessage(e));
     }
   };
 
@@ -69,7 +70,7 @@ export function MouseSettings() {
       setPrevious(null);
       toast.success("Restored previous pointer settings");
     } catch (e) {
-      toast.error("Could not restore previous settings", String(e));
+      toast.error("Could not restore previous settings", getErrorMessage(e));
     }
   };
 

@@ -2,6 +2,7 @@ import mascotHappy from "../assets/mascot/happy.png";
 import { Button } from "./ui/Button";
 import { getSettings, updateSettings } from "../lib/api";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import { SAFETY_NOTICE } from "../lib/constants";
 
 export function FirstRunNotice({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -13,7 +14,7 @@ export function FirstRunNotice({ open, onClose }: { open: boolean; onClose: () =
       const settings = await getSettings();
       await updateSettings({ ...settings, first_run_complete: true });
     } catch (e) {
-      toast.error("Could not save", String(e));
+      toast.error("Could not save", getErrorMessage(e));
     } finally {
       onClose();
     }

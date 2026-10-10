@@ -9,6 +9,7 @@ import { Settings } from "./pages/Settings";
 import { FirstRunNotice } from "./components/FirstRunNotice";
 import { getSettings, listProfiles } from "./lib/api";
 import { useToast } from "./lib/toast";
+import { getErrorMessage } from "./lib/errors";
 
 export type Page =
   | "overview"
@@ -38,7 +39,7 @@ function App() {
             .catch(() => {});
         }
       })
-      .catch((e) => toast.error("Could not load settings", String(e)))
+      .catch((e) => toast.error("Could not load settings", getErrorMessage(e)))
       .finally(() => setCheckedFirstRun(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -7,6 +7,7 @@ import { StatusBadge } from "../components/ui/StatusBadge";
 import { Spinner } from "../components/ui/Spinner";
 import { ConfirmDialog } from "../components/ui/Dialog";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import {
   listDevices,
   getPointerConfig,
@@ -53,7 +54,7 @@ export function Overview({ onNavigate }: { onNavigate: (page: Page) => void }) {
         ),
       );
     } catch (e) {
-      toast.error("Could not load overview", String(e));
+      toast.error("Could not load overview", getErrorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -71,7 +72,7 @@ export function Overview({ onNavigate }: { onNavigate: (page: Page) => void }) {
       toast.success("Restored Windows pointer defaults", "Speed set to 10, acceleration disabled.");
       load();
     } catch (e) {
-      toast.error("Could not restore defaults", String(e));
+      toast.error("Could not restore defaults", getErrorMessage(e));
     }
   };
 
@@ -81,7 +82,7 @@ export function Overview({ onNavigate }: { onNavigate: (page: Page) => void }) {
       const report = await capabilityCheck();
       setCapabilities(report);
     } catch (e) {
-      toast.error("Capability check failed", String(e));
+      toast.error("Capability check failed", getErrorMessage(e));
     } finally {
       setCheckingCapabilities(false);
     }

@@ -26,13 +26,29 @@ behavior changes.
 - **Launch at startup** — a real per-user Run registry entry, toggleable, no admin rights.
 - **Settings page safety notice** — the spec's required first-run and Settings-page anti-cheat
   statement is shown verbatim (`src/lib/constants.ts`).
+- **NSIS installer** — `releases/Glooblet-Setup.exe`, per-user install (no admin rights), WebView2
+  silently downloaded/installed by the bootstrapper if missing. Built, silently installed, and
+  launched from the real installed location in this environment: the resulting window's class is
+  `Tauri Window` (not a crash, not the native error dialog described below), confirming the
+  bundled-resource path resolution works in the actual installed layout, not just in dev.
+- **Startup failures show a message instead of vanishing** — the release profile sets
+  `panic = "abort"` and the windowed subsystem hides the console, so an unhandled panic during
+  startup used to mean the app would silently disappear with zero explanation. `setup()` now
+  collects its fallible steps (app-data dir, resource dir, database open, sound seeding) into a
+  `Result` and shows a native `MessageBoxW` with the real reason before exiting if any of them
+  fail, instead of panicking (`src-tauri/src/lib.rs::build_app_state` / `fatal_startup_error`).
+- **Error toasts show the actual error** — every `toast.error(...)` call in the frontend used to
+  pass `String(e)` on a rejected `invoke()` call. Tauri rejects with the serialized
+  `{ code, message }` object our `AppError` produces, not a string, so every single error toast in
+  the app showed the literal text "[object Object]" instead of anything useful. Fixed once via
+  `src/lib/errors.ts::getErrorMessage`, used everywhere a command's rejection reaches the user.
 
 Backend coverage: 20 Rust unit tests across `calc`, `db::profiles`, `db::sounds`, `db` (migrations
 + settings), and `audio` (file validation), all passing (`cargo test`). Frontend type-checks clean
-(`tsc --noEmit`) and the production bundle builds (`vite build`). The full Tauri binary compiles
-and was launched once in dev mode from this environment to confirm `setup()` completes without
-panicking (DB opens, migrations run, sounds seed, audio engine initializes) — see the caveat
-below on what that launch did **not** verify.
+(`tsc --noEmit`) and the production bundle builds (`vite build`). The release binary and the NSIS
+installer were both built, and the installer was silently installed and launched from its real
+install location to confirm a clean startup — see the caveat below on what that still didn't
+verify (no click-by-click GUI testing was done from this environment).
 
 ## Deferred / explicitly not implemented
 
@@ -47,9 +63,9 @@ These are left out on purpose, consistent with the spec's own "don't fake it, sa
   unless a specific detection method has been reviewed and approved; this build ships manual
   profile selection only. The foreground-process lookup that exists (for Click Studio's
   "mute over games") is *not* wired to profile switching.
-- **Code-signed installer / release packaging** — `npm run tauri build` will produce an
-  installer if NSIS or WiX is present on the build machine, but no signing certificate, update
-  mechanism, or release pipeline is set up here.
+- **Code signing / auto-update** — the NSIS installer is real and installs/launches cleanly, but
+  it isn't code-signed (Windows SmartScreen will warn on first run for an unsigned, low-reputation
+  binary — that's expected, not a bug) and there's no auto-update mechanism or release pipeline.
 - **Frontend unit tests** — the frontend is a thin view layer over the Rust commands; the logic
   worth unit-testing (math, validation, persistence) is tested on the Rust side. No Vitest/RTL
   suite was written for the React components themselves.

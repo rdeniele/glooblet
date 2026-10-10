@@ -7,6 +7,7 @@ import { StatusBadge } from "../components/ui/StatusBadge";
 import { EmptyState } from "../components/ui/EmptyState";
 import { Spinner } from "../components/ui/Spinner";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import { listDevices } from "../lib/api";
 import type { DeviceInfo } from "../lib/types";
 
@@ -31,7 +32,7 @@ export function Devices() {
     try {
       setDevices(await listDevices());
     } catch (e) {
-      toast.error("Could not enumerate devices", String(e));
+      toast.error("Could not enumerate devices", getErrorMessage(e));
     } finally {
       setLoading(false);
     }

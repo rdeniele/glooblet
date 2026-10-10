@@ -7,7 +7,9 @@ kept separate from the Tauri app's own frontend (`src/`).
 ## Sections
 
 Hero (what it is + download CTA) → Features (what each of the six app screens actually does) →
-Safety (the anti-cheat policy, in full) → Download (the real download link) → Footer.
+Learn (four short, accurate explainers on DPI/polling rate/acceleration/cm-360, useful whether or
+not someone installs the app) → Safety (the anti-cheat policy, in full) → Download (the real
+download link) → Footer.
 
 ## Preview locally
 

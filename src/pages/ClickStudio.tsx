@@ -10,6 +10,7 @@ import { StatusBadge } from "../components/ui/StatusBadge";
 import { Spinner } from "../components/ui/Spinner";
 import { ConfirmDialog } from "../components/ui/Dialog";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import {
   listSoundPresets,
   previewSound,
@@ -47,7 +48,7 @@ export function ClickStudio() {
       setConfig(clickConfig);
       setSettings(appSettings);
     } catch (e) {
-      toast.error("Could not load Click Studio", String(e));
+      toast.error("Could not load Click Studio", getErrorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -72,7 +73,7 @@ export function ClickStudio() {
     try {
       await previewSound(preset.id);
     } catch (e) {
-      toast.error("Could not play preview", String(e));
+      toast.error("Could not play preview", getErrorMessage(e));
     }
   };
 
@@ -85,7 +86,7 @@ export function ClickStudio() {
         toast.success(`Imported "${result.name}"`, result.duration_ms ? `${(result.duration_ms / 1000).toFixed(2)}s` : undefined);
       }
     } catch (e) {
-      toast.error("Could not import sound", String(e));
+      toast.error("Could not import sound", getErrorMessage(e));
     } finally {
       setImporting(false);
     }
@@ -98,7 +99,7 @@ export function ClickStudio() {
       setPresets((p) => p.filter((s) => s.id !== confirmDelete.id));
       toast.success("Sound removed");
     } catch (e) {
-      toast.error("Could not remove sound", String(e));
+      toast.error("Could not remove sound", getErrorMessage(e));
     } finally {
       setConfirmDelete(null);
     }
@@ -111,7 +112,7 @@ export function ClickStudio() {
     try {
       await setClickSoundConfig(next);
     } catch (e) {
-      toast.error("Could not update click sound mapping", String(e));
+      toast.error("Could not update click sound mapping", getErrorMessage(e));
     }
   };
 
@@ -122,7 +123,7 @@ export function ClickStudio() {
       await setClickSoundEnabled(enabled);
       toast.success(enabled ? "Click sounds enabled" : "Click sounds disabled");
     } catch (e) {
-      toast.error("Could not change click sound state", String(e));
+      toast.error("Could not change click sound state", getErrorMessage(e));
       load();
     }
   };
@@ -133,7 +134,7 @@ export function ClickStudio() {
     try {
       await setDesktopSoundBehavior(behavior);
     } catch (e) {
-      toast.error("Could not update behavior", String(e));
+      toast.error("Could not update behavior", getErrorMessage(e));
     }
   };
 
@@ -144,7 +145,7 @@ export function ClickStudio() {
     try {
       await updateSettings(next);
     } catch (e) {
-      toast.error("Could not update volume", String(e));
+      toast.error("Could not update volume", getErrorMessage(e));
     }
   };
 

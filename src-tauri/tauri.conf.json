@@ -27,7 +27,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis"],
     "resources": ["resources/sounds/*"],
     "icon": [
       "icons/32x32.png",
@@ -37,6 +37,17 @@
       "icons/icon.ico"
     ],
     "shortDescription": "Mouse optimization and personalization",
-    "longDescription": "Glooblet is a lightweight Windows utility for configuring supported mouse settings, organizing per-game profiles, and personalizing desktop click sounds."
+    "longDescription": "Glooblet is a lightweight Windows utility for configuring supported mouse settings, organizing per-game profiles, and personalizing desktop click sounds.",
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["English"],
+        "displayLanguageSelector": false
+      }
+    }
   }
 }

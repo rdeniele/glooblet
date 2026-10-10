@@ -5,6 +5,7 @@ import { Toggle } from "../components/ui/Toggle";
 import { Spinner } from "../components/ui/Spinner";
 import { ConfirmDialog } from "../components/ui/Dialog";
 import { useToast } from "../lib/toast";
+import { getErrorMessage } from "../lib/errors";
 import { getSettings, setLaunchAtStartup } from "../lib/api";
 import type { AppSettings } from "../lib/types";
 import { SAFETY_NOTICE } from "../lib/constants";
@@ -19,7 +20,7 @@ export function Settings() {
     try {
       setSettings(await getSettings());
     } catch (e) {
-      toast.error("Could not load settings", String(e));
+      toast.error("Could not load settings", getErrorMessage(e));
     }
   };
 
@@ -36,7 +37,7 @@ export function Settings() {
       await setLaunchAtStartup(enabled);
       toast.success(enabled ? "Glooblet will launch at startup" : "Removed from Windows startup");
     } catch (e) {
-      toast.error("Could not change startup setting", String(e));
+      toast.error("Could not change startup setting", getErrorMessage(e));
       load();
     }
   };
